@@ -69,7 +69,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   Tag.update(
     {
-      name: req.body.name
+      tag_name: req.body.tag_name
     },
     {
       where: {
@@ -77,12 +77,12 @@ router.put('/:id', (req, res) => {
       }
     }
   )
-  .then(tag => {
-    if (!tag) {
+  .then(result => {
+    if (result[0] === 0) {
       res.status(404).json({ message: 'No tag found with this id' });
       return;
     }
-    res.json(tag);
+    res.json({ message: 'Tag updated successfully' });
   })
   .catch(err => {
     console.error(err);
