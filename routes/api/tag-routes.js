@@ -4,21 +4,27 @@ const { Tag, Product, ProductTag } = require('../../models');
 // The `/api/tags` endpoint
 
 router.get('/', (req, res) => {
+  console.log('test');
   Tag.findAll({
+    // where: {
+    //   id: req.params.id,
+    // },
+    
     include: [
       {
+        
         model: Product,
         through: ProductTag, // Specifies the junction table
-        as: 'products'
+        // as: 'products'
       }
     ]
   })
-  .then(tags => res.json(tags))
-  .catch(err => {
-    console.error(err);
-    res.status(500).json(err);
+  .then(tags => res.status(200).json(tags))
+  .catch(err => 
+    // console.error(err);
+    res.status(404).json(err));
   });
-});
+
 
 
 router.get('/:id', (req, res) => {
@@ -47,10 +53,9 @@ router.get('/:id', (req, res) => {
   });
 });
 
-
 router.post('/', (req, res) => {
   Tag.create({
-    name: req.body.name
+    tag_name: req.body.tag_name
   })
   .then(tag => res.status(201).json(tag))
   .catch(err => {
@@ -58,6 +63,7 @@ router.post('/', (req, res) => {
     res.status(400).json(err);
   });
 });
+
 
 
 router.put('/:id', (req, res) => {
